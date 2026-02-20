@@ -7,7 +7,7 @@ const PORT = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const data = loadData();
 
-const onRequest = (response, request) => {
+const onRequest = (request, response) => {
     const parsedUrl = url.parse(request.url, true);
     router(request, response, parsedUrl, data);
 };
