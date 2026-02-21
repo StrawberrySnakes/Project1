@@ -37,7 +37,7 @@ const editItem = (request, response, content) => {
       item.name = body.name;
     }
 
-    return responses.sendJSON(request, response, 204);
+    return responses.sendJSON(request, response, 204, {});
   });
 };
 

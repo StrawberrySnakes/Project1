@@ -24,7 +24,7 @@ const displayCountries = (data) => {
         `;
         output.appendChild(card);
     });
-    console.log("Finished adding cards to the screen!");
+    console.log("Finished adding to the screen!");
 };
 
 const loadItems = async () => {
@@ -53,7 +53,7 @@ const loadItems = async () => {
 const addItem = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const body = new URLSearchParams(formData);
+    const body = new URLSearchParams(formData).toString();
 
     try {
         const response = await fetch('/addItem', {
@@ -78,13 +78,46 @@ const addItem = async (e) => {
     }
 };
 
+const editItem = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const body = new URLSearchParams(formData).toString();
+
+    try {
+        const response = await fetch('/editItem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Accept: 'application/json',
+            },
+            body,
+        });
+
+        //204 for change
+        if (response.status === 204) {
+            console.log("Country edited successfully!");
+            e.target.reset();
+            loadItems(); 
+        } else {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (err) {
+        console.error("Error editing item:", err);
+    }
+};
+
 const init = () => {
     console.log("Page loaded, setting up buttons");
     const loadBtn = document.querySelector('#loadBtn');
     const addForm = document.querySelector('#addForm');
+    const editForm = document.querySelector('#editForm');
+
 
     if (loadBtn) loadBtn.addEventListener('click', loadItems);
     if (addForm) addForm.addEventListener('submit', addItem);
+    if (editForm) addForm.addEventListener('submit', editItem);
+
 
     // Initial Load
     if (document.querySelector('#output')) {
