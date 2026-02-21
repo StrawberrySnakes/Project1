@@ -1,1 +1,92 @@
-<!-- blank docs.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation - Project 1</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a> | <strong>API Documentation</strong>
+  </nav>
+
+  <h1>API Endpoints</h1>
+  <p>Use these endpoints to interact with our dataset. All responses are returned in JSON format.</p>
+
+  <hr>
+
+  <section>
+    <h2>GET Endpoints</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Description</th>
+          <th>Params</th>
+          <th>Success Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>/getAll</code></td>
+          <td>Returns the entire list of items.</td>
+          <td>None</td>
+          <td>200</td>
+        </tr>
+        <tr>
+          <td><code>/getById</code></td>
+          <td>Returns a specific item by ID.</td>
+          <td><code>id</code> (Query Param)</td>
+          <td>200</td>
+        </tr>
+        <tr>
+          <td><code>/search</code></td>
+          <td>Filters items by name (case-insensitive).</td>
+          <td><code>name</code> (Query Param)</td>
+          <td>200</td>
+        </tr>
+        <tr>
+          <td><code>/meta</code></td>
+          <td>Returns the total count of items.</td>
+          <td>None</td>
+          <td>200</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>POST Endpoints</h2>
+    <p><em>Note: Content-Type must be <code>application/x-www-form-urlencoded</code> or <code>application/json</code>.</em></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Description</th>
+          <th>Body Fields</th>
+          <th>Success Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>/addItem</code></td>
+          <td>Creates a new item.</td>
+          <td><code>name</code></td>
+          <td>201</td>
+        </tr>
+        <tr>
+          <td><code>/editItem</code></td>
+          <td>Updates an existing item name.</td>
+          <td><code>id</code>, <code>name</code></td>
+          <td>204</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p>© 2026 API Documentation Project</p>
+  </footer>
+</body>
+</html>

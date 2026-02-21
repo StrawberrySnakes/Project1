@@ -10,13 +10,20 @@ const parseBody = (request, path) => {
     });
 
     request.on('end', () => {
+
+        if(body.length == 0) {
+            return callback({});
+        }
+
         const contentType = request.headers['content-type'];
 
-        if(contentType == 'application/json') {
-            callback(JSON.parse(body));
-        } else if (contentType == 'application/x-www-form-urlencoded') {
-            callback(querystring.parse(body));
-        } else {
+        try {
+            if(contentType == 'application/json') {
+                callback(JSON.parse(body));
+            } else {
+                callback(querystring.parse(body));
+            }
+        } catch (e) {
             callback({});
         }
     });

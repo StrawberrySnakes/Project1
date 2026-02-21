@@ -9,6 +9,8 @@ const getAll = (request, response, parsedUrl, content) => {
 const getById = (request, response, parsedUrl, content) => {
     const {id} = parsedUrl.query;
 
+    const item = content.items.find((i) => i.id === id);
+
     if(!id) {
         return responses.sendJSON(request, response, 400 , {
             message : 'Missing id parameters',
@@ -36,7 +38,7 @@ const search = (request, response, parsedUrl, content) => {
 
 const meta = (request, response, parsedUrl, content) => {
     return responses.sendJSON(request, response, 200, {
-        totalItems : content.item.length,
+        totalItems : content.items.length,
     });
 };
 
