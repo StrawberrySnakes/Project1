@@ -17,12 +17,13 @@ const getById = (request, response, parsedUrl, content) => {
         });
     }
 
-    return response.sendJSON(request, response, 200, item);
+    return responses.sendJSON(request, response, 200, item);
 };
 
 const search = (request, response, parsedUrl, content) => {
     const {name, region} = parsedUrl.query;
-    let filtered = content.item;
+
+    let filtered = content.items;
 
     if(name) {
         filtered = filtered.filter((i) => i.name.toLowerCase().includes(name.toLowerCase()));
@@ -31,7 +32,7 @@ const search = (request, response, parsedUrl, content) => {
         filtered = filtered.filter((i) => i.region.toLowerCase() === region.toLowerCase());
     }
 
-    responses.sendJSON(request, response, 200, {item: filtered});
+    return responses.sendJSON(request, response, 200, {item: filtered});
 };
 
 const meta = (request, response, parsedUrl, content) => {

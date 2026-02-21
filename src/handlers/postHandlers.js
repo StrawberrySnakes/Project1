@@ -3,15 +3,17 @@ const responses = require('../responses.js');
 
 const addItem = (request, response, content) => {
     parseBody(request, (body) => {
-        if(!body.name) {
+        if(!body.name || !body.capital || !body.region) {
             return responses.sendJSON(request, response, 400, {
-                message: 'Name is Required'
+                message: 'All Fields are Required'
             });
         };   
 
         const newItem = {
             id: Date.now().toString(),
             name: body.name,
+            capital: body.capital,
+            region: body.region,
         };
 
         content.items.push(newItem);
