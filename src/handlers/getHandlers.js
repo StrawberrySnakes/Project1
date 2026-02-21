@@ -7,20 +7,12 @@ const getAll = (request, response, parsedUrl, content) => {
 };
 
 const getById = (request, response, parsedUrl, content) => {
-    const {id} = parsedUrl.query;
-
-    const item = content.items.find((i) => i.id === id);
-
-    if(!id) {
-        return responses.sendJSON(request, response, 400 , {
-            message : 'Missing id parameters',
-            id : 'badRequest',
-        });
-    }
+    const {name} = parsedUrl.query;
+    const item = content.items.find((i) => i.name.toLowerCase() === name?.toLowerCase());
 
     if(!item) {
         return responses.sendJSON(request, response, 404, {
-            message : 'Item not found',
+            message : 'Country not found',
             id : 'nonFound',
         });
     }
@@ -29,11 +21,17 @@ const getById = (request, response, parsedUrl, content) => {
 };
 
 const search = (request, response, parsedUrl, content) => {
-    const {name} = parsedUrl.query;
-    const filtered = name ? content.items.filter((i) => i.name.includes(name)) : content.items;
-    return responses.sendJSON(request, response, 200, {
-        items: filtered,
-    });
+    const {name, region} = parsedUrl.query;
+    let filtered = content.item;
+
+    if(name) {
+        filtered = filtered.filter((i) => i.name.toLowerCase().includes(name.toLowerCase()));
+    }
+    if (region) {
+        filtered = filtered.filter((i) => i.region.toLowerCase() === region.toLowerCase());
+    }
+
+    responses.sendJSON(request, response, 200, {item: filtered});
 };
 
 const meta = (request, response, parsedUrl, content) => {

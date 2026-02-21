@@ -12,23 +12,21 @@ const parseBody = (request, path) => {
     request.on('end', () => {
 
         if(body.length == 0) {
-            return callback({});
+            return path({});
         }
 
         const contentType = request.headers['content-type'];
 
         try {
             if(contentType == 'application/json') {
-                callback(JSON.parse(body));
+                path(JSON.parse(body));
             } else {
-                callback(querystring.parse(body));
+                path(querystring.parse(body));
             }
         } catch (e) {
-            callback({});
+            path({});
         }
     });
 };
 
-module.exports = {
-    parseBody
-}
+module.exports = parseBody;

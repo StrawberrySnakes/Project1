@@ -7,17 +7,31 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <h1>Project 1 API</h1>
+  <h1>World Country Explorer</h1>
 
-  <form id="addForm">
-    <input type="text" name="name" placeholder="Item Name" required />
-    <button type="submit">Add Item</button>
-  </form>
+  <section id="controls">
+    <h3>Add a Country</h3>
+    <form id="addForm">
+      <input type="text" name="name" placeholder="Country Name" required />
+      <input type="text" name="capital" placeholder="Capital" required />
+      <input type="text" name="region" placeholder="Region (e.g. Asia)" required />
+      <button type="submit">Add Country</button>
+    </form>
 
-  <button id="loadBtn">Load All Items</button>
+    <hr>
 
-  <pre id="output"></pre>
+    <h3>Search & Filter</h3>
+    <input type="text" id="searchName" placeholder="Search by name..." />
+    <select id="filterRegion">
+      <option value="">All Regions</option>
+      <option value="Asia">Asia</option>
+      <option value="Europe">Europe</option>
+      <option value="Africa">Africa</option>
+      <option value="Americas">Americas</option>
+    </select>
+    <button id="loadBtn">Load Countries</button>
+  </section>
 
-  <script src="js/client.js"></script>
+  <div id="output"></div>
 </body>
 </html>
