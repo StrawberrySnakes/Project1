@@ -1,3 +1,4 @@
+// client.js
 const output = document.querySelector('#output');
 
 const loadItems = async () => {
