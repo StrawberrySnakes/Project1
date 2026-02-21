@@ -2,32 +2,38 @@
 const output = document.querySelector('#output');
 
 const displayCountries = (data) => {
+    console.log("displayCountries received data:", data);
     output.innerHTML = '';
 
     if (!data.items || data.items.length === 0) {
+        console.log("No items found in data! Showing 'No countries found.'");
         output.innerHTML = '<p>No countries found.</p>';
         return;
     }
 
+    console.log(`Looping through ${data.items.length} countries to build cards...`);
     data.items.forEach(country => {
         const card = document.createElement('div');
         card.className = 'country-card';
 
         card.innerHTML = `
-            <h4>Name: ${country.name}</h4>
-            <p>Capital: ${country.capital}</p>
-            <p>Region: ${country.region}</p>
+            <h4>Name: ${country.name || 'Unknown'}</h4>
+            <p>Capital: ${country.capital || 'Unknown'}</p>
+            <p>Region: ${country.region || 'Unknown'}</p>
             <p>Currency: ${country.finance?.currency_name || 'N/A'}</p>
         `;
         output.appendChild(card);
     });
+    console.log("Finished adding cards to the screen!");
 };
 
 const loadItems = async () => {
-    const nameSearch = document.querySelector('#searchName').value;
-    const regionFilter = document.querySelector('#filterRegion').value;
+    console.log("1. Search button clicked or initial load triggered!");
+    const nameSearch = document.querySelector('#searchName').value || '';
+    const regionFilter = document.querySelector('#filterRegion').value || '';
 
     const url = `/search?name=${encodeURIComponent(nameSearch)}&region=${encodeURIComponent(regionFilter)}`;
+    console.log("Fetching URL:", url);
 
     try { 
         const response = await fetch(url, {
@@ -46,7 +52,6 @@ const loadItems = async () => {
 
 const addItem = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
     const body = new URLSearchParams(formData);
 
@@ -63,7 +68,7 @@ const addItem = async (e) => {
         if (response.status === 201) {
             console.log("Country added successfully!");
             e.target.reset();
-            loadItems(); // Refresh the list
+            loadItems(); 
         } else {
             const errorData = await response.json();
             alert(`Error: ${errorData.message}`);
@@ -73,8 +78,18 @@ const addItem = async (e) => {
     }
 };
 
-document.querySelector('#loadBtn').addEventListener('click', loadItems);
-document.querySelector('#addForm').addEventListener('submit', addItem);
+const init = () => {
+    console.log("Page loaded, setting up buttons");
+    const loadBtn = document.querySelector('#loadBtn');
+    const addForm = document.querySelector('#addForm');
 
-// Initial Load
-loadItems();
+    if (loadBtn) loadBtn.addEventListener('click', loadItems);
+    if (addForm) addForm.addEventListener('submit', addItem);
+
+    // Initial Load
+    if (document.querySelector('#output')) {
+        loadItems();
+    }
+};
+
+window.onload = init;

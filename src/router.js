@@ -12,7 +12,7 @@ const router = (request, response, parsedUrl, content) => {
     if (pathname === '/search') return getHandlers.search(request, response, parsedUrl, content);
     if (pathname === '/getById') return getHandlers.getById(request, response, parsedUrl, content);
     if (pathname === '/meta') return getHandlers.meta(request, response, parsedUrl, content);
-    
+
     // Static Files
     if (pathname === '/' || pathname === '/index.html') {
       return serveFile(request, response, path.join(__dirname, '../client/index.html'));
