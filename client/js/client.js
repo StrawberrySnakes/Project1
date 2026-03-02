@@ -21,7 +21,6 @@ const displayCountries = (data) => {
             <h4>Name: ${country.name || 'Unknown'}</h4>
             <p>Capital: ${country.capital || 'Unknown'}</p>
             <p>Region: ${country.region || 'Unknown'}</p>
-            // Adding Currency Symbol as well
             <p>Currency: ${country.finance?.currency_name || 'N/A'}</p>
             <p>Currency Symbol: ${country.finance?.currency_symbol || 'N/A'}</p>
         `;
