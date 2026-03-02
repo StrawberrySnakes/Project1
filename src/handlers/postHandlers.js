@@ -1,6 +1,8 @@
+// postHandlers.js - Handlers for POST requests to various endpoints
 const parseBody = require('../utils/parseBody');
 const responses = require('../responses');
 
+// For POST request to /item endpoint to add a new item
 const addItem = (request, response, content) => {
   parseBody(request, (body) => {
     if (!body.name || !body.capital || !body.region) {
@@ -9,6 +11,7 @@ const addItem = (request, response, content) => {
       });
     }
 
+    // keep the new item simple.
     const newItem = {
       id: Date.now().toString(),
       name: body.name,
@@ -18,10 +21,12 @@ const addItem = (request, response, content) => {
 
     content.items.push(newItem);
 
+    // 201 Created
     return responses.sendJSON(request, response, 201, newItem);
   });
 };
 
+// For POST request to /item endpoint to edit an existing item
 const editItem = (request, response, content) => {
   parseBody(request, (body) => {
     const item = content.items.find((i) => i.id === body.id);

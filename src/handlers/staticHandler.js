@@ -1,36 +1,41 @@
+// staticHandler.js - Handler for serving static files like HTML, CSS, JS, images, etc.
 const fs = require('fs');
 const path = require('path');
 
-const mimeTypes = {
-  '.html': 'text/html',
-  '.css': 'text/css',
-  '.js': 'application/javascript',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
+// determines content type based on file extension
+const getContentType = (ext) => {
+  if (ext === '.html') return 'text/html';
+  if (ext === '.css') return 'text/css';
+  if (ext === '.js') return 'application/javascript';
+  if (ext === '.json') return 'application/json';
+  if (ext === '.png') return 'image/png';
+  if (ext === '.jpg') return 'image/jpeg';
+  return 'text/plain';
 };
 
-const serveFile = (req, res, filePath) => {
+// serve static files based on the request URL
+const serveFile = (request, response, filePath) => {
   const ext = path.extname(filePath);
-  const contentType = mimeTypes[ext] || 'application/octet-stream';
+  // Replacing it wiht a simpler way to implement
+  const contentType = getContentType(ext);
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('File not found');
+      response.writeHead(404, { 'Content-Type': 'text/plain' });
+      response.end('File not found');
       return;
     }
 
-    res.writeHead(200, {
+    response.writeHead(200, {
       'Content-Type': contentType,
       'Content-Length': data.length,
     });
 
-    if (req.method !== 'HEAD') {
-      res.write(data);
+    if (request.method !== 'HEAD') {
+      response.write(data);
     }
 
-    res.end();
+    response.end();
   });
 };
 

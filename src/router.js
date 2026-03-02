@@ -1,12 +1,16 @@
+//router.js - main router for handling incoming requests and directing them to the correct handlers
 const path = require('path');
 const serveFile = require('./handlers/staticHandler');
 const getHandlers = require('./handlers/getHandlers');
 const postHandlers = require('./handlers/postHandlers');
 const notFound = require('./handlers/notFound');
 
+// Main router function that takes in the request, response, parsed URL, and content data 
+// and routes the request to the correct handler based on the method and pathname
 const router = (request, response, parsedUrl, content) => {
   const { pathname } = parsedUrl;
 
+  // Handle GET and HEAD requests to endpoints
   if (request.method === 'GET' || request.method === 'HEAD') {
     if (pathname === '/getAll') return getHandlers.getAll(request, response, parsedUrl, content);
     if (pathname === '/search') return getHandlers.search(request, response, parsedUrl, content);
@@ -25,6 +29,7 @@ const router = (request, response, parsedUrl, content) => {
     }
   }
 
+  // Handle POST requests to /addItem and /editItem endpoints
   if (request.method === 'POST') {
     if (pathname === '/addItem') return postHandlers.addItem(request, response, content);
     if (pathname === '/editItem') return postHandlers.editItem(request, response, content);

@@ -1,6 +1,7 @@
 // client.js
 const output = document.querySelector('#output');
 
+// function to display countries on the screen
 const displayCountries = (data) => {
     console.log("displayCountries received data:", data);
     output.innerHTML = '';
@@ -20,13 +21,16 @@ const displayCountries = (data) => {
             <h4>Name: ${country.name || 'Unknown'}</h4>
             <p>Capital: ${country.capital || 'Unknown'}</p>
             <p>Region: ${country.region || 'Unknown'}</p>
+            // Adding Currency Symbol as well
             <p>Currency: ${country.finance?.currency_name || 'N/A'}</p>
+            <p>Currency Symbol: ${country.finance?.currency_symbol || 'N/A'}</p>
         `;
         output.appendChild(card);
     });
     console.log("Finished adding to the screen!");
 };
 
+// function to load items based on search and filter criteria
 const loadItems = async () => {
     console.log("1. Search button clicked or initial load triggered!");
     const nameSearch = document.querySelector('#searchName').value || '';
@@ -35,6 +39,7 @@ const loadItems = async () => {
     const url = `/search?name=${encodeURIComponent(nameSearch)}&region=${encodeURIComponent(regionFilter)}`;
     console.log("Fetching URL:", url);
 
+    // try-catch to handle potential fetch errors
     try { 
         const response = await fetch(url, {
             method: 'GET',
@@ -50,11 +55,13 @@ const loadItems = async () => {
     }
 };
 
+// function to handle adding a new country
 const addItem = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const body = new URLSearchParams(formData).toString();
 
+    // try-catch to handle potential fetch errors and response handling
     try {
         const response = await fetch('/addItem', {
             method: 'POST',
@@ -66,7 +73,8 @@ const addItem = async (e) => {
         });
 
         if (response.status === 201) {
-            console.log("Country added successfully!");
+            // Let the user know their country was added
+            alert("Country added successfully!");
             e.target.reset();
             loadItems(); 
         } else {
@@ -78,6 +86,7 @@ const addItem = async (e) => {
     }
 };
 
+// function to handle editing an existing country
 const editItem = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -107,11 +116,16 @@ const editItem = async (e) => {
     }
 };
 
+// initialization function to set up event listeners
 const init = () => {
     console.log("Page loaded, setting up buttons");
     const loadBtn = document.querySelector('#loadBtn');
     const addForm = document.querySelector('#addForm');
     const editForm = document.querySelector('#editForm');
+
+    // Adding to auto update when typing
+    document.querySelector('#searchName').addEventListener('input', loadItems);
+    document.querySelector('#filterRegion').addEventListener('change', loadItems);
 
 
     if (loadBtn) loadBtn.addEventListener('click', loadItems);
@@ -125,4 +139,5 @@ const init = () => {
     }
 };
 
+// init to run when page loads
 window.onload = init;

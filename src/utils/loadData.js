@@ -1,6 +1,8 @@
+// loadData.js - load data from a JSON file
 const fs = require('fs');
 const path = require('path');
 
+// Loads data from the JSON file and return it as an object with an 'items' array
 const loadData = () => {
   const filePath = path.join(__dirname, '../data/data.json');
   const raw = fs.readFileSync(filePath);

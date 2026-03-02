@@ -1,14 +1,24 @@
+// getHandlers.js - Handlers for GET requests to various endpoints
 const responses = require('../responses');
 
+// For GET requests to /items and /item endpoints
 const getAll = (request, response, parsedUrl, content) => {
   responses.sendJSON(request, response, 200, {
     items: content.items,
   });
 };
 
+// For GET request to /item endpoint with query parameter 'name'
 const getById = (request, response, parsedUrl, content) => {
   const { name } = parsedUrl.query;
   const item = content.items.find((i) => i.name.toLowerCase() === name?.toLowerCase());
+
+  if(!name) {
+    return responses.sendJSON(request, response, 400, {
+      message: 'Name parameter is required',
+      id: 'missingName',
+    });
+  }
 
   if (!item) {
     return responses.sendJSON(request, response, 404, {
@@ -20,6 +30,7 @@ const getById = (request, response, parsedUrl, content) => {
   return responses.sendJSON(request, response, 200, item);
 };
 
+// For GET request to /search endpoint with query parameters 'name' and 'region'
 const search = (request, response, parsedUrl, content) => {
   // testing
   console.log('\n--- SERVER: /search endpoint hit! ---');
@@ -47,9 +58,11 @@ const search = (request, response, parsedUrl, content) => {
   return responses.sendJSON(request, response, 200, { items: filtered });
 };
 
+// For GET request to /meta endpoint to return metadata about the items
 const meta = (request, response, parsedUrl, content) => responses.sendJSON(request, response, 200, {
   totalItems: content.items.length,
 });
+
 
 module.exports = {
   getAll,
