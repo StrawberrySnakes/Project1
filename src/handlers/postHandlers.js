@@ -57,9 +57,7 @@ const editItem = (request, response, content) => {
       if (body.currencySymbol) item.finance.currency_symbol = body.currencySymbol;
     }
 
-    // 204 => no content but successful change
-    return responses.sendJSON(request, response, 204, {});
-  });
+    return responses.sendJSON(request, response, 200, {message: 'Update successful'});  });
 };
 
 module.exports = {

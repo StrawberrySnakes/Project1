@@ -28,12 +28,14 @@ const displayCountries = (data) => {
         `;
         output.appendChild(card);
 
-        const editForm = document.querySelector('#editForm');
         card.querySelector('.edit-btn').addEventListener('click', () => {
+            const editForm = document.querySelector('#editForm');
             editForm.name.value = country.name || '';
+            editForm.newName.value = country.name || '';
             editForm.capital.value = country.capital || '';
             editForm.region.value = country.region || '';
-            editForm.currency.value = country.finance?.currency_name || '';
+            editForm.currencyName.value = country.finance?.currency_name || '';
+            editForm.currencySymbol.value = country.finance?.currency_symbol || '';
             editForm.scrollIntoView({ behavior: 'smooth' });
         });
     });
@@ -113,10 +115,9 @@ const editItem = async (e) => {
         });
 
         if (response.status === 200) {
-            const data = await response.json();
-            alert(`Country updated successfully!\nName: ${data.item.name}\nCapital: ${data.item.capital}\nRegion: ${data.item.region}`);
+            alert("Country updated successfully!");
             e.target.reset();
-            loadItems(); 
+            loadItems();
         } else {
             const errorData = await response.json();
             alert(`Error: ${errorData.message}`);

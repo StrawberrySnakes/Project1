@@ -3,8 +3,6 @@ const globals = require("globals");
 
 module.exports = [
   js.configs.recommended,
-
-  // ✅ Treat eslint.config.js as Node
   {
     files: ["eslint.config.js"],
     languageOptions: {
@@ -12,7 +10,6 @@ module.exports = [
     },
   },
 
-  // ✅ Server (Node)
   {
     files: ["src/**/*.js"],
     languageOptions: {
@@ -23,7 +20,6 @@ module.exports = [
     },
   },
 
-  // ✅ Client (Browser)
   {
     files: ["client/**/*.js"],
     languageOptions: {

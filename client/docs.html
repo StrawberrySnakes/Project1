@@ -23,7 +23,7 @@
         <tr>
           <th>Endpoint</th>
           <th>Description</th>
-          <th>Params</th>
+          <th>Query Params</th>
           <th>Success Code</th>
         </tr>
       </thead>
@@ -36,14 +36,14 @@
         </tr>
         <tr>
           <td><code>/getById</code></td>
-          <td>Returns a specific item by ID.</td>
-          <td><code>id</code> (Query Param)</td>
+          <td>Returns a specific item by name (case-insensitive).</td>
+          <td><code>name</code> (required)</td>
           <td>200</td>
         </tr>
         <tr>
           <td><code>/search</code></td>
-          <td>Filters items by name (case-insensitive).</td>
-          <td><code>name</code> (Query Param)</td>
+          <td>Filters items by name and/or region (case-insensitive).</td>
+          <td><code>name</code> (optional), <code>region</code> (optional)</td>
           <td>200</td>
         </tr>
         <tr>
@@ -72,14 +72,27 @@
         <tr>
           <td><code>/addItem</code></td>
           <td>Creates a new item.</td>
-          <td><code>name</code></td>
+          <td>
+            <code>name</code> (required),<br>
+            <code>capital</code> (required),<br>
+            <code>region</code> (required),<br>
+            <code>currencyName</code> (optional),<br>
+            <code>currencySymbol</code> (optional)
+          </td>
           <td>201</td>
         </tr>
         <tr>
           <td><code>/editItem</code></td>
-          <td>Updates an existing item name.</td>
-          <td><code>id</code>, <code>name</code></td>
-          <td>204</td>
+          <td>Updates an existing item by <code>name</code>.</td>
+          <td>
+            <code>name</code> (required, current name),<br>
+            <code>newName</code> (optional),<br>
+            <code>capital</code> (optional),<br>
+            <code>region</code> (optional),<br>
+            <code>currencyName</code> (optional),<br>
+            <code>currencySymbol</code> (optional)
+          </td>
+          <td>200</td>
         </tr>
       </tbody>
     </table>
