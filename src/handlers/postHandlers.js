@@ -29,19 +29,35 @@ const addItem = (request, response, content) => {
 // For POST request to /item endpoint to edit an existing item
 const editItem = (request, response, content) => {
   parseBody(request, (body) => {
-    const item = content.items.find((i) => i.id === body.id);
+
+    if (!body.name) {
+      return responses.sendJSON(request, response, 400, {
+        message: 'Name is required to edit an item',
+      });
+    }
+
+    const item = content.items.find(
+          (i) => i.name.toLowerCase() === body.name.toLowerCase()
+    );
 
     if (!item) {
-      return responses.sendJSON(request, response, 400, {
-        message: 'Item not Found',
+      return responses.sendJSON(request, response, 404, {
+        message: 'Country not Found',
         id: 'notFound',
       });
     }
 
-    if (body.name) {
-      item.name = body.name;
+    // Update fields if they are provided in the request body
+    if (body.newName) item.name = body.newName;
+    if (body.capital) item.capital = body.capital;
+    if (body.region) item.region = body.region;
+    if (body.currencyName || body.currencySymbol) {
+      if (!item.finance) item.finance = {};
+      if (body.currencyName) item.finance.currency_name = body.currencyName;
+      if (body.currencySymbol) item.finance.currency_symbol = body.currencySymbol;
     }
 
+    // 204 => no content but successful change
     return responses.sendJSON(request, response, 204, {});
   });
 };

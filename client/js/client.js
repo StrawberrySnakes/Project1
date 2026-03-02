@@ -23,8 +23,19 @@ const displayCountries = (data) => {
             <p>Region: ${country.region || 'Unknown'}</p>
             <p>Currency: ${country.finance?.currency_name || 'N/A'}</p>
             <p>Currency Symbol: ${country.finance?.currency_symbol || 'N/A'}</p>
+            <button class="edit-btn">Edit</button>
+
         `;
         output.appendChild(card);
+
+        const editForm = document.querySelector('#editForm');
+        card.querySelector('.edit-btn').addEventListener('click', () => {
+            editForm.name.value = country.name || '';
+            editForm.capital.value = country.capital || '';
+            editForm.region.value = country.region || '';
+            editForm.currency.value = country.finance?.currency_name || '';
+            editForm.scrollIntoView({ behavior: 'smooth' });
+        });
     });
     console.log("Finished adding to the screen!");
 };
@@ -101,9 +112,9 @@ const editItem = async (e) => {
             body,
         });
 
-        //204 for change
-        if (response.status === 204) {
-            console.log("Country edited successfully!");
+        if (response.status === 200) {
+            const data = await response.json();
+            alert(`Country updated successfully!\nName: ${data.item.name}\nCapital: ${data.item.capital}\nRegion: ${data.item.region}`);
             e.target.reset();
             loadItems(); 
         } else {
@@ -129,8 +140,7 @@ const init = () => {
 
     if (loadBtn) loadBtn.addEventListener('click', loadItems);
     if (addForm) addForm.addEventListener('submit', addItem);
-    if (editForm) addForm.addEventListener('submit', editItem);
-
+    if (editForm) editForm.addEventListener('submit', editItem);
 
     // Initial Load
     if (document.querySelector('#output')) {
