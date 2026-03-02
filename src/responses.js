@@ -1,5 +1,10 @@
 //responses.js - for sending JSON responses
 const sendJSON = (request, response, statusCode, obj) => {
+
+  if (statusCode === 204) {
+    response.writeHead(204);
+    return response.end();
+  }
   const responseJSON = JSON.stringify(obj || {});
 
   response.writeHead(statusCode, {

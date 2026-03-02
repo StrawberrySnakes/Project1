@@ -3,103 +3,200 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Documentation - Project 1</title>
+  <title>API Documentation - World Country Explorer</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/docs.css">
 </head>
 <body>
   <nav>
-    <a href="/">Home</a> | <strong>API Documentation</strong>
+    <a href="/">← Back to Explorer</a> | <strong>API Documentation</strong>
   </nav>
 
-  <h1>API Endpoints</h1>
-  <p>Use these endpoints to interact with our dataset. All responses are returned in JSON format.</p>
+  <header>
+    <h1>World Country API Documentation</h1>
+    <p>Welcome to the developer documentation for the World Country Explorer API. Use these endpoints to access, search, and modify country data. All data is returned in <code>application/json</code> format.</p>
+  </header>
 
   <hr>
 
   <section>
-    <h2>GET Endpoints</h2>
+    <h2>Endpoint Summary</h2>
     <table>
       <thead>
         <tr>
           <th>Endpoint</th>
+          <th>Methods</th>
           <th>Description</th>
-          <th>Query Params</th>
           <th>Success Code</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><code>/getAll</code></td>
-          <td>Returns the entire list of items.</td>
-          <td>None</td>
-          <td>200</td>
+          <td>GET, HEAD</td>
+          <td>Retrieve all countries in the dataset.</td>
+          <td>200 OK</td>
         </tr>
         <tr>
           <td><code>/getById</code></td>
-          <td>Returns a specific item by name (case-insensitive).</td>
-          <td><code>name</code> (required)</td>
-          <td>200</td>
+          <td>GET, HEAD</td>
+          <td>Retrieve a single country by name.</td>
+          <td>200 OK</td>
         </tr>
         <tr>
           <td><code>/search</code></td>
-          <td>Filters items by name and/or region (case-insensitive).</td>
-          <td><code>name</code> (optional), <code>region</code> (optional)</td>
-          <td>200</td>
+          <td>GET, HEAD</td>
+          <td>Filter countries by name or region.</td>
+          <td>200 OK</td>
         </tr>
         <tr>
           <td><code>/meta</code></td>
-          <td>Returns the total count of items.</td>
-          <td>None</td>
-          <td>200</td>
+          <td>GET, HEAD</td>
+          <td>Get count of total items in dataset.</td>
+          <td>200 OK</td>
         </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section>
-    <h2>POST Endpoints</h2>
-    <p><em>Note: Content-Type must be <code>application/x-www-form-urlencoded</code> or <code>application/json</code>.</em></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Endpoint</th>
-          <th>Description</th>
-          <th>Body Fields</th>
-          <th>Success Code</th>
-        </tr>
-      </thead>
-      <tbody>
         <tr>
           <td><code>/addItem</code></td>
-          <td>Creates a new item.</td>
-          <td>
-            <code>name</code> (required),<br>
-            <code>capital</code> (required),<br>
-            <code>region</code> (required),<br>
-            <code>currencyName</code> (optional),<br>
-            <code>currencySymbol</code> (optional)
-          </td>
-          <td>201</td>
+          <td>POST</td>
+          <td>Add a new country record.</td>
+          <td>201 Created</td>
         </tr>
         <tr>
           <td><code>/editItem</code></td>
-          <td>Updates an existing item by <code>name</code>.</td>
-          <td>
-            <code>name</code> (required, current name),<br>
-            <code>newName</code> (optional),<br>
-            <code>capital</code> (optional),<br>
-            <code>region</code> (optional),<br>
-            <code>currencyName</code> (optional),<br>
-            <code>currencySymbol</code> (optional)
-          </td>
-          <td>200</td>
+          <td>POST</td>
+          <td>Update an existing country record.</td>
+          <td>204 No Content</td>
         </tr>
       </tbody>
     </table>
   </section>
 
+  <section id="getAll">
+    <h2><span class="method">GET</span> /getAll</h2>
+    <p>Returns the full list of countries currently stored in the server's memory.</p>
+    <ul>
+      <li><strong>Supported Methods:</strong> GET, HEAD</li>
+      <li><strong>Query Params:</strong> None</li>
+      <li><strong>Returns:</strong> An object containing an <code>items</code> array.</li>
+      <li><strong>Example Usage:</strong> <code>GET /getAll</code></li>
+    </ul>
+    <strong>Example Response:</strong>
+    <pre>{
+  "items": [
+    { "id": "1", "name": "Canada", "capital": "Ottawa", "region": "Americas" },
+    { "id": "2", "name": "France", "capital": "Paris", "region": "Europe" }
+  ]
+}</pre>
+  </section>
+
+  <section id="getById">
+    <h2><span class="method">GET</span> /getById</h2>
+    <p>Fetches data for a specific country based on its name.</p>
+    <ul>
+      <li><strong>Supported Methods:</strong> GET, HEAD</li>
+      <li><strong>Query Params:</strong>
+        <ul>
+          <li><code>name</code> (String, Required): The name of the country.</li>
+        </ul>
+      </li>
+      <li><strong>Returns:</strong> A single country object.</li>
+      <li><strong>Example Usage:</strong> <code>GET /getById?name=Japan</code></li>
+    </ul>
+    <strong>Example Response:</strong>
+    <pre>{
+  "id": "16234",
+  "name": "Japan",
+  "capital": "Tokyo",
+  "region": "Asia"
+}</pre>
+  </section>
+
+  <section id="search">
+    <h2><span class="method">GET</span> /search</h2>
+    <p>Search and filter countries by name fragments or geographical region.</p>
+    <ul>
+      <li><strong>Supported Methods:</strong> GET, HEAD</li>
+      <li><strong>Query Params:</strong>
+        <ul>
+          <li><code>name</code> (String, Optional): Case-insensitive partial name match.</li>
+          <li><code>region</code> (String, Optional): Exact case-insensitive region match.</li>
+        </ul>
+      </li>
+      <li><strong>Returns:</strong> An array of matching objects inside an <code>items</code> key.</li>
+      <li><strong>Example Usage:</strong> <code>GET /search?region=Europe&name=ice</code></li>
+    </ul>
+    <strong>Example Response:</strong>
+    <pre>{
+  "items": [
+    { "id": "55", "name": "Iceland", "capital": "Reykjavik", "region": "Europe" }
+  ]
+}</pre>
+  </section>
+
+  <section id="addItem">
+    <h2><span class="method post">POST</span> /addItem</h2>
+    <p>Creates a new country entry. Requires JSON or URL-encoded body data.</p>
+    <ul>
+      <li><strong>Supported Methods:</strong> POST</li>
+      <li><strong>Body Parameters:</strong>
+        <ul>
+          <li><code>name</code> (String, Required)</li>
+          <li><code>capital</code> (String, Required)</li>
+          <li><code>region</code> (String, Required)</li>
+        </ul>
+      </li>
+      <li><strong>Returns:</strong> The newly created object.</li>
+      <li><strong>Example Usage:</strong> <code>POST /addItem</code></li>
+    </ul>
+    <strong>Example Body (JSON):</strong>
+    <pre>{
+  "name": "Atlantis",
+  "capital": "Poseidonia",
+  "region": "Ocean"
+}</pre>
+    <strong>Example Response (201 Created):</strong>
+    <pre>{
+  "id": "1710438291000",
+  "name": "Atlantis",
+  "capital": "Poseidonia",
+  "region": "Ocean"
+}</pre>
+  </section>
+
+  <section id="editItem">
+    <h2><span class="method post">POST</span> /editItem</h2>
+    <p>Updates an existing entry based on the provided name.</p>
+    <ul>
+      <li><strong>Supported Methods:</strong> POST</li>
+      <li><strong>Body Parameters:</strong>
+        <ul>
+          <li><code>name</code> (String, Required): The <strong>current</strong> name of the country to find.</li>
+          <li><code>newName</code> (String, Optional): The new name to assign.</li>
+          <li><code>capital</code> (String, Optional): The new capital name.</li>
+          <li><code>region</code> (String, Optional): The new region name.</li>
+        </ul>
+      </li>
+      <li><strong>Returns:</strong> No content (Status 204).</li>
+      <li><strong>Example Usage:</strong> <code>POST /editItem</code> with body <code>{"name": "Atlantis", "capital": "New Atlantis"}</code></li>
+    </ul>
+  </section>
+
+  <section id="errors">
+    <h2>Error Responses</h2>
+    <p>Common error codes returned by the API:</p>
+    <ul>
+      <li><code>400 Bad Request</code>: Missing required parameters.</li>
+      <li><code>404 Not Found</code>: The requested endpoint or country name does not exist.</li>
+    </ul>
+    <strong>Example Error Body:</strong>
+    <pre>{
+  "message": "Name parameter is required",
+  "id": "missingName"
+}</pre>
+  </section>
+
   <footer>
-    <p>© Dessa Shapiro 2026 API Documentation Project</p>
+    <p>© Dessa Shapiro 2026 | IGME 430 Project 1</p>
   </footer>
 </body>
 </html>
